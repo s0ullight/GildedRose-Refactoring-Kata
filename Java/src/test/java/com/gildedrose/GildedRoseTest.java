@@ -97,4 +97,16 @@ class GildedRoseTest {
         assertFalse(item.quality > quality);
     }
 
+    @Test
+    void updateQualityDoesNotDecreaseItemQualityForSulfuras() {
+        String name = "Sulfuras, Hand of Ragnaros";
+        int sellIn = 1;
+        int quality = 80;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        Item item = app.items[0];
+        assertEquals(quality, item.quality);
+    }
+
 }
