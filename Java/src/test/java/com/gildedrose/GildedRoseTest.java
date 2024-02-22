@@ -157,4 +157,20 @@ class GildedRoseTest {
         assertEquals(0, item.quality);
     }
 
+    @Test
+    void updateQualityDecreasesItemQualityTwiceAsFastForConjuredItems() {
+        String regularItemName = "foo";
+        String conjuredItemName = "Conjured item";
+        int sellIn = 1;
+        int quality = 50;
+        Item regularItem = new Item(regularItemName, sellIn, quality);
+        Item conjuredItem = new Item(conjuredItemName, sellIn, quality);
+        Item[] items = new Item[] { regularItem, conjuredItem };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        int qualityDecreaseForRegularItem = quality - regularItem.quality;
+        int qualityDecreaseForConjuredItem = quality - conjuredItem.quality;
+        assertEquals(qualityDecreaseForRegularItem * 2, qualityDecreaseForConjuredItem);
+    }
+
 }
