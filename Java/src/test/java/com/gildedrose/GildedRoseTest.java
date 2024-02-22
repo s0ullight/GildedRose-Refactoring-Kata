@@ -3,6 +3,7 @@ package com.gildedrose;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GildedRoseTest {
@@ -82,6 +83,18 @@ class GildedRoseTest {
         app.updateQuality();
         Item item = app.items[0];
         assertTrue(item.quality > 0);
+    }
+
+    @Test
+    void updateQualityDoesNotIncreaseItemQualityBeyondFifty() {
+        String name = "Aged Brie";
+        int sellIn = 1;
+        int quality = 50;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        Item item = app.items[0];
+        assertFalse(item.quality > quality);
     }
 
 }
