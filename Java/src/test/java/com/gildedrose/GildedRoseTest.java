@@ -134,7 +134,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void updateQualityIncreasesItemQualityByThreeInLastFiveDaysForBackStagePasses() {
+    void updateQualityIncreasesItemQualityByThreeInLastFiveDaysForBackstagePasses() {
         String name = "Backstage passes to a TAFKAL80ETC concert";
         int sellIn = 5;
         int quality = 0;
@@ -143,6 +143,18 @@ class GildedRoseTest {
         app.updateQuality();
         Item item = app.items[0];
         assertEquals(quality + 3, item.quality);
+    }
+
+    @Test
+    void updateQualityDropsItemQualityToZeroAfterExpiryForBackstagePasses() {
+        String name = "Backstage passes to a TAFKAL80ETC concert";
+        int sellIn = 0;
+        int quality = 10;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        Item item = app.items[0];
+        assertEquals(0, item.quality);
     }
 
 }
