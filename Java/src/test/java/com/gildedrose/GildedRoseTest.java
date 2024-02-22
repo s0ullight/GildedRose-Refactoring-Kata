@@ -72,4 +72,16 @@ class GildedRoseTest {
         assertTrue(item.quality >= 0);
     }
 
+    @Test
+    void updateQualityIncreasesItemQualityForAgedBrie() {
+        String name = "Aged Brie";
+        int sellIn = 1;
+        int quality = 0;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        Item item = app.items[0];
+        assertTrue(item.quality > 0);
+    }
+
 }
