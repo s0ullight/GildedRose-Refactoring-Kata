@@ -109,4 +109,16 @@ class GildedRoseTest {
         assertEquals(quality, item.quality);
     }
 
+    @Test
+    void updateQualityIncreasesItemQualityForBackstagePasses() {
+        String name = "Backstage passes to a TAFKAL80ETC concert";
+        int sellIn = 20;
+        int quality = 0;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        Item item = app.items[0];
+        assertTrue(quality < item.quality);
+    }
+
 }
