@@ -43,4 +43,21 @@ class GildedRoseTest {
         assertTrue(item.quality < quality);
     }
 
+    @Test
+    void updateQualityDecreasesItemQualityTwiceAsFastWhenItemIsExpired() {
+        String name = "foo";
+        int sellIn = 1;
+        int quality = 50;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        Item item = app.items[0];
+        int updatedQualityBeforeExpiry = item.quality;
+        int qualityDecreaseBeforeExpiry = quality - updatedQualityBeforeExpiry;
+        app.updateQuality();
+        int updatedQualityAfterExpiry = item.quality;
+        int qualityDecreaseAfterExpiry = updatedQualityBeforeExpiry - updatedQualityAfterExpiry;
+        assertEquals(qualityDecreaseBeforeExpiry * 2, qualityDecreaseAfterExpiry);
+    }
+
 }
