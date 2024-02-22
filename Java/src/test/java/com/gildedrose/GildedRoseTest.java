@@ -121,4 +121,16 @@ class GildedRoseTest {
         assertTrue(quality < item.quality);
     }
 
+    @Test
+    void updateQualityIncreasesItemQualityByTwoInLastTenDaysForBackstagePasses() {
+        String name = "Backstage passes to a TAFKAL80ETC concert";
+        int sellIn = 10;
+        int quality = 0;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        Item item = app.items[0];
+        assertEquals(quality + 2, item.quality);
+    }
+
 }
