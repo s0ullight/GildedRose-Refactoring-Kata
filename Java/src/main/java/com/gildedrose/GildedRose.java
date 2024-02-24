@@ -18,28 +18,23 @@ class GildedRose {
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
             Item item = items[i];
+            int qualityDelta = 0;
             if (item.name.equals(AGED_BRIE) || item.name.equals(BACKSTAGE_PASSES)) {
-                if (item.quality < MAX_QUALITY) {
-                    item.quality++;
+                qualityDelta++;
 
-                    if (item.name.equals(BACKSTAGE_PASSES)) {
-                        if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
-                            if (item.quality < MAX_QUALITY) {
-                                item.quality++;
-                            }
-                        }
+                if (item.name.equals(BACKSTAGE_PASSES)) {
+                    if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
+                        qualityDelta++;
+                    }
 
-                        if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
-                            if (item.quality < MAX_QUALITY) {
-                                item.quality++;
-                            }
-                        }
+                    if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
+                        qualityDelta++;
                     }
                 }
+                item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
             } else if (!item.name.equals(SULFURAS)) {
-                if (item.quality > MIN_QUALITY) {
-                    item.quality--;
-                }
+                qualityDelta--;
+                item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
             }
 
             if (!item.name.equals(SULFURAS)) {
