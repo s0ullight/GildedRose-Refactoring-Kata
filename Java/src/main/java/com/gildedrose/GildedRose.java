@@ -18,14 +18,7 @@ class GildedRose {
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
             Item item = items[i];
-            if (!item.name.equals(AGED_BRIE)
-                    && !item.name.equals(BACKSTAGE_PASSES)) {
-                if (item.quality > MIN_QUALITY) {
-                    if (!item.name.equals(SULFURAS)) {
-                        item.quality--;
-                    }
-                }
-            } else {
+            if (item.name.equals(AGED_BRIE) || item.name.equals(BACKSTAGE_PASSES)) {
                 if (item.quality < MAX_QUALITY) {
                     item.quality++;
 
@@ -43,6 +36,12 @@ class GildedRose {
                         }
                     }
                 }
+            } else {
+                if (item.quality > MIN_QUALITY) {
+                    if (!item.name.equals(SULFURAS)) {
+                        item.quality--;
+                    }
+                }
             }
 
             if (!item.name.equals(SULFURAS)) {
@@ -50,19 +49,19 @@ class GildedRose {
             }
 
             if (item.sellIn < EXPIRY) {
-                if (!item.name.equals(AGED_BRIE)) {
-                    if (!item.name.equals(BACKSTAGE_PASSES)) {
+                if (item.name.equals(AGED_BRIE)) {
+                    if (item.quality < MAX_QUALITY) {
+                        item.quality++;
+                    }
+                } else {
+                    if (item.name.equals(BACKSTAGE_PASSES)) {
+                        item.quality = MIN_QUALITY;
+                    } else {
                         if (item.quality > MIN_QUALITY) {
                             if (!item.name.equals(SULFURAS)) {
                                 item.quality--;
                             }
                         }
-                    } else {
-                        item.quality = MIN_QUALITY;
-                    }
-                } else {
-                    if (item.quality < MAX_QUALITY) {
-                        item.quality++;
                     }
                 }
             }
