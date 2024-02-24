@@ -1,6 +1,11 @@
 package com.gildedrose;
 
 class GildedRose {
+    private static final int AGED_BRIE_QUALITY_DELTA = 1;
+    private static final int REGULAR_ITEM_QUALITY_DELTA = -1;
+    private static final int BACKSTAGE_PASSES_QUALITY_DELTA = 1;
+    private static final int BACKSTAGE_PASSES_QUALITY_DELTA_TEN = 2;
+    private static final int BACKSTAGE_PASSES_QUALITY_DELTA_FIVE = 3;
     private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     private static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
     private static final String AGED_BRIE = "Aged Brie";
@@ -18,23 +23,21 @@ class GildedRose {
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
             Item item = items[i];
-            int qualityDelta = 0;
+            final int qualityDelta;
             if(item.name.equals(AGED_BRIE)) {
-                qualityDelta++;
+                qualityDelta = AGED_BRIE_QUALITY_DELTA;
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
             } else if(item.name.equals(BACKSTAGE_PASSES)) {
-                qualityDelta++;
-
-                if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
-                    qualityDelta++;
-                }
-
                 if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
-                    qualityDelta++;
+                    qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_FIVE;
+                } else if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
+                    qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_TEN;
+                } else {
+                    qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA;
                 }
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
             } else if(!item.name.equals(SULFURAS)) {
-                qualityDelta--;
+                qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
                 item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
             }
 
