@@ -18,9 +18,13 @@ class GildedRose {
     private static final int BACKSTAGE_PASSES_QUALITY_DELTA_TEN = 2;
     private static final int BACKSTAGE_PASSES_QUALITY_DELTA_FIVE = 3;
 
+    private static final int CONJURED_ITEM_QUALITY_DELTA = -2;
+    private static final int EXPIRED_CONJURED_ITEM_QUALITY_DELTA = -4;
+
     private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     private static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
     private static final String AGED_BRIE = "Aged Brie";
+    private static final String CONJURED_ITEM = "Conjured item";
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -58,6 +62,13 @@ class GildedRose {
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
             } else if(item.name.equals(SULFURAS)) {
                 // Hey Alexa, play U Can't Touch This by MC Hammer
+            } else if(item.name.equals(CONJURED_ITEM)) {
+                if(isExpired) {
+                    qualityDelta = EXPIRED_CONJURED_ITEM_QUALITY_DELTA;
+                } else {
+                    qualityDelta = CONJURED_ITEM_QUALITY_DELTA;
+                }
+                item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
             } else {
                 if(isExpired) {
                     qualityDelta = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
