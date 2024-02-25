@@ -33,6 +33,18 @@ class GildedRoseTest {
     }
 
     @Test
+    void updateQualityDoesNotDecreaseItemSellInForSulfuras() {
+        String name = "Sulfuras, Hand of Ragnaros";
+        int sellIn = 1;
+        int quality = 50;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        Item item = app.items[0];
+        assertEquals(sellIn, item.sellIn);
+    }
+
+    @Test
     void updateQualityDecreasesItemQuality() {
         String name = "foo";
         int sellIn = 1;
