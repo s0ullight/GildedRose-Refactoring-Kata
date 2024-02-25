@@ -1,8 +1,12 @@
 package com.gildedrose;
 
 class GildedRose {
+    private static final int EXPIRED_REGULAR_ITEM_QUALITY_DELTA = -1;
+    private static final int EXPIRED_SULFURAS_QUALITY_DELTA = 0;
+    private static final int SULFURAS_QUALITY_DELTA = 0;
+    private static final int EXPIRED_AGED_BRIE_QUALITY_DELTA = 1;
     private static final int AGED_BRIE_QUALITY_DELTA = 1;
-    private static final int REGULAR_ITEM_QUALITY_DELTA = -1;
+    private static final int REGULAR_ITEM_QUALITY_DELTA = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
     private static final int BACKSTAGE_PASSES_QUALITY_DELTA = 1;
     private static final int BACKSTAGE_PASSES_QUALITY_DELTA_TEN = 2;
     private static final int BACKSTAGE_PASSES_QUALITY_DELTA_FIVE = 3;
@@ -37,6 +41,8 @@ class GildedRose {
                 }
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
             } else if(item.name.equals(SULFURAS)) {
+                qualityDelta = SULFURAS_QUALITY_DELTA;
+                item.quality = item.quality + qualityDelta;
             } else {
                 qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
                 item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
@@ -47,17 +53,19 @@ class GildedRose {
             }
 
             if(item.sellIn < EXPIRY) {
+                final int qualityDeltaWhenExpired;
                 if(item.name.equals(AGED_BRIE)) {
-                    if(item.quality < MAX_QUALITY) {
-                        item.quality++;
-                    }
+                    qualityDeltaWhenExpired = EXPIRED_AGED_BRIE_QUALITY_DELTA;
+                    item.quality = Math.min(item.quality + qualityDeltaWhenExpired, MAX_QUALITY);
                 } else if(item.name.equals(BACKSTAGE_PASSES)) {
-                    item.quality = MIN_QUALITY;
+                    qualityDeltaWhenExpired = MIN_QUALITY - item.quality;
+                    item.quality = item.quality + qualityDeltaWhenExpired;
                 } else if(item.name.equals(SULFURAS)) {
+                    qualityDeltaWhenExpired = EXPIRED_SULFURAS_QUALITY_DELTA;
+                    item.quality = item.quality + qualityDeltaWhenExpired;
                 } else {
-                    if(item.quality > MIN_QUALITY) {
-                        item.quality--;
-                    }
+                    qualityDeltaWhenExpired = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
+                    item.quality = Math.max(item.quality + qualityDeltaWhenExpired, MIN_QUALITY);
                 }
             }
         }
