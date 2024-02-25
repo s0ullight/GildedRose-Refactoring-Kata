@@ -36,7 +36,8 @@ class GildedRose {
                     qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA;
                 }
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
-            } else if(!item.name.equals(SULFURAS)) {
+            } else if(item.name.equals(SULFURAS)) {
+            } else {
                 qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
                 item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
             }
@@ -52,7 +53,8 @@ class GildedRose {
                     }
                 } else if(item.name.equals(BACKSTAGE_PASSES)) {
                     item.quality = MIN_QUALITY;
-                } else if(!item.name.equals(SULFURAS)) {
+                } else if(item.name.equals(SULFURAS)) {
+                } else {
                     if(item.quality > MIN_QUALITY) {
                         item.quality--;
                     }
