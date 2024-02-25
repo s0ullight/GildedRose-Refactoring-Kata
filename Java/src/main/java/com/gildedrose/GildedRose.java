@@ -21,10 +21,10 @@ class GildedRose {
     private static final int CONJURED_ITEM_QUALITY_DELTA = -2;
     private static final int EXPIRED_CONJURED_ITEM_QUALITY_DELTA = -4;
 
-    private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
-    private static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
+    private static final String SULFURAS = "Sulfuras";
+    private static final String BACKSTAGE_PASSES = "Backstage passes";
     private static final String AGED_BRIE = "Aged Brie";
-    private static final String CONJURED_ITEM = "Conjured item";
+    private static final String CONJURED_ITEM = "Conjured";
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -36,7 +36,7 @@ class GildedRose {
             Item item = items[i];
             final int qualityDelta;
 
-            if (!item.name.equals(SULFURAS)) {
+            if (!item.name.startsWith(SULFURAS)) {
                 item.sellIn--;
             }
 
@@ -49,7 +49,7 @@ class GildedRose {
                     qualityDelta = AGED_BRIE_QUALITY_DELTA;
                 }
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
-            } else if(item.name.equals(BACKSTAGE_PASSES)) {
+            } else if(item.name.startsWith(BACKSTAGE_PASSES)) {
                 if(isExpired) {
                     qualityDelta = MIN_QUALITY - item.quality;
                 } else if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
@@ -60,9 +60,9 @@ class GildedRose {
                     qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA;
                 }
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
-            } else if(item.name.equals(SULFURAS)) {
+            } else if(item.name.startsWith(SULFURAS)) {
                 // Hey Alexa, play U Can't Touch This by MC Hammer
-            } else if(item.name.equals(CONJURED_ITEM)) {
+            } else if(item.name.startsWith(CONJURED_ITEM)) {
                 if(isExpired) {
                     qualityDelta = EXPIRED_CONJURED_ITEM_QUALITY_DELTA;
                 } else {
