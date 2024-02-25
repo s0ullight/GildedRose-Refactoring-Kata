@@ -141,37 +141,43 @@ class GildedRoseTest {
     @Test
     void updateQualityIncreasesItemQualityForBackstagePasses() {
         String name = "Backstage passes to a TAFKAL80ETC concert";
-        int sellIn = 20;
-        int quality = 0;
+        int sellIn = 11;
+        int quality = 10;
         Item[] items = new Item[] { new Item(name, sellIn, quality) };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         Item item = app.items[0];
-        assertTrue(quality < item.quality);
+        assertEquals(quality + 1, item.quality);
     }
 
     @Test
     void updateQualityIncreasesItemQualityByTwoInLastTenDaysForBackstagePasses() {
         String name = "Backstage passes to a TAFKAL80ETC concert";
-        int sellIn = 10;
-        int quality = 0;
-        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        int sellInTen = 10;
+        int sellInSix = 6;
+        int quality = 10;
+        Item itemToSellInTen = new Item(name, sellInTen, quality);
+        Item itemToSellInSix = new Item(name, sellInSix, quality);
+        Item[] items = new Item[] { itemToSellInTen, itemToSellInSix };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        Item item = app.items[0];
-        assertEquals(quality + 2, item.quality);
+        assertEquals(quality + 2, itemToSellInTen.quality);
+        assertEquals(quality + 2, itemToSellInSix.quality);
     }
 
     @Test
     void updateQualityIncreasesItemQualityByThreeInLastFiveDaysForBackstagePasses() {
         String name = "Backstage passes to a TAFKAL80ETC concert";
-        int sellIn = 5;
-        int quality = 0;
-        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        int sellInFive = 5;
+        int sellInOne = 1;
+        int quality = 10;
+        Item itemToSellInFive = new Item(name, sellInFive, quality);
+        Item itemToSellInOne = new Item(name, sellInOne, quality);
+        Item[] items = new Item[] { itemToSellInFive, itemToSellInOne };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        Item item = app.items[0];
-        assertEquals(quality + 3, item.quality);
+        assertEquals(quality + 3, itemToSellInFive.quality);
+        assertEquals(quality + 3, itemToSellInOne.quality);
     }
 
     @Test
