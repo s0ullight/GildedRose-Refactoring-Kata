@@ -34,49 +34,53 @@ class GildedRose {
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
             Item item = items[i];
-            final int qualityDelta;
+            handleDayEndForItem(item);
+        }
+    }
 
-            if (!item.name.startsWith(SULFURAS)) {
-                item.sellIn--;
-            }
+    private static void handleDayEndForItem(Item item) {
+        final int qualityDelta;
 
-            final boolean isExpired = item.sellIn < EXPIRY;
+        if (!item.name.startsWith(SULFURAS)) {
+            item.sellIn--;
+        }
 
-            if(item.name.equals(AGED_BRIE)) {
-                if(isExpired) {
-                    qualityDelta = EXPIRED_AGED_BRIE_QUALITY_DELTA;
-                } else {
-                    qualityDelta = AGED_BRIE_QUALITY_DELTA;
-                }
-                item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
-            } else if(item.name.startsWith(BACKSTAGE_PASSES)) {
-                if(isExpired) {
-                    qualityDelta = MIN_QUALITY - item.quality;
-                } else if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
-                    qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_FIVE;
-                } else if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
-                    qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_TEN;
-                } else {
-                    qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA;
-                }
-                item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
-            } else if(item.name.startsWith(SULFURAS)) {
-                // Hey Alexa, play U Can't Touch This by MC Hammer
-            } else if(item.name.startsWith(CONJURED_ITEM)) {
-                if(isExpired) {
-                    qualityDelta = EXPIRED_CONJURED_ITEM_QUALITY_DELTA;
-                } else {
-                    qualityDelta = CONJURED_ITEM_QUALITY_DELTA;
-                }
-                item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
+        final boolean isExpired = item.sellIn < EXPIRY;
+
+        if (item.name.equals(AGED_BRIE)) {
+            if (isExpired) {
+                qualityDelta = EXPIRED_AGED_BRIE_QUALITY_DELTA;
             } else {
-                if(isExpired) {
-                    qualityDelta = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
-                } else {
-                    qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
-                }
-                item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
+                qualityDelta = AGED_BRIE_QUALITY_DELTA;
             }
+            item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
+        } else if (item.name.startsWith(BACKSTAGE_PASSES)) {
+            if (isExpired) {
+                qualityDelta = MIN_QUALITY - item.quality;
+            } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
+                qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_FIVE;
+            } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
+                qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_TEN;
+            } else {
+                qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA;
+            }
+            item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
+        } else if (item.name.startsWith(SULFURAS)) {
+            // Hey Alexa, play U Can't Touch This by MC Hammer
+        } else if (item.name.startsWith(CONJURED_ITEM)) {
+            if (isExpired) {
+                qualityDelta = EXPIRED_CONJURED_ITEM_QUALITY_DELTA;
+            } else {
+                qualityDelta = CONJURED_ITEM_QUALITY_DELTA;
+            }
+            item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
+        } else {
+            if (isExpired) {
+                qualityDelta = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
+            } else {
+                qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
+            }
+            item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
         }
     }
 }
