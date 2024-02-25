@@ -39,12 +39,18 @@ class GildedRose {
     }
 
     private static void handleDayEndForItem(Item item) {
-        final int qualityDelta;
+        updateItemSellIn(item);
+        updateItemQuality(item);
+    }
 
+    private static void updateItemSellIn(Item item) {
         if (!item.name.startsWith(SULFURAS)) {
             item.sellIn--;
         }
+    }
 
+    private static void updateItemQuality(Item item) {
+        final int qualityDelta;
         final boolean isExpired = item.sellIn < EXPIRY;
 
         if (item.name.equals(AGED_BRIE)) {
