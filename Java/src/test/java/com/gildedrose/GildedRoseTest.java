@@ -3,7 +3,6 @@ package com.gildedrose;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GildedRoseTest {
@@ -53,7 +52,7 @@ class GildedRoseTest {
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         Item item = app.items[0];
-        assertTrue(item.quality < quality);
+        assertEquals(quality - 1, item.quality);
     }
 
     @Test
@@ -67,6 +66,7 @@ class GildedRoseTest {
         Item item = app.items[0];
         int updatedQualityBeforeExpiry = item.quality;
         int qualityDecreaseBeforeExpiry = quality - updatedQualityBeforeExpiry;
+        assertEquals(1, qualityDecreaseBeforeExpiry);
         app.updateQuality();
         int updatedQualityAfterExpiry = item.quality;
         int qualityDecreaseAfterExpiry = updatedQualityBeforeExpiry - updatedQualityAfterExpiry;
@@ -94,7 +94,24 @@ class GildedRoseTest {
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         Item item = app.items[0];
-        assertTrue(item.quality > 0);
+        assertEquals(1, item.quality);
+    }
+
+    @Test
+    void updateQualityIncreasesItemQualityTwiceAsFastForAgedBrieWhenExpired() {
+        String name = "Aged Brie";
+        int sellIn = 1;
+        int quality = 0;
+        Item[] items = new Item[] { new Item(name, sellIn, quality) };
+        GildedRose app = new GildedRose(items);
+        Item item = app.items[0];
+        app.updateQuality();
+        int updatedQualityBeforeExpiry = item.quality;
+        int qualityIncreaseBeforeExpiry = item.quality - quality;
+        app.updateQuality();
+        int qualityIncreaseAfterExpiry = item.quality - updatedQualityBeforeExpiry;
+        assertEquals(1, qualityIncreaseBeforeExpiry);
+        assertEquals(2, qualityIncreaseAfterExpiry);
     }
 
     @Test
@@ -106,7 +123,7 @@ class GildedRoseTest {
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         Item item = app.items[0];
-        assertFalse(item.quality > quality);
+        assertEquals(quality, item.quality);
     }
 
     @Test
