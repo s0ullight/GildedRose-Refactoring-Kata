@@ -1,23 +1,26 @@
 package com.gildedrose;
 
 class GildedRose {
-    private static final int EXPIRED_REGULAR_ITEM_QUALITY_DELTA = -1;
-    private static final int EXPIRED_SULFURAS_QUALITY_DELTA = 0;
-    private static final int SULFURAS_QUALITY_DELTA = 0;
-    private static final int EXPIRED_AGED_BRIE_QUALITY_DELTA = 1;
+    private static final int EXPIRY = 0;
+    private static final int MIN_QUALITY = 0;
+    private static final int MAX_QUALITY = 50;
+
+    private static final int BACKSTAGE_PASSES_THRESHOLD_TEN = 10;
+    private static final int BACKSTAGE_PASSES_THRESHOLD_FIVE = 5;
+
+    private static final int REGULAR_ITEM_QUALITY_DELTA = -1;
+    private static final int EXPIRED_REGULAR_ITEM_QUALITY_DELTA = -2;
+
     private static final int AGED_BRIE_QUALITY_DELTA = 1;
-    private static final int REGULAR_ITEM_QUALITY_DELTA = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
+    private static final int EXPIRED_AGED_BRIE_QUALITY_DELTA = 2;
+    
     private static final int BACKSTAGE_PASSES_QUALITY_DELTA = 1;
     private static final int BACKSTAGE_PASSES_QUALITY_DELTA_TEN = 2;
     private static final int BACKSTAGE_PASSES_QUALITY_DELTA_FIVE = 3;
+
     private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     private static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
     private static final String AGED_BRIE = "Aged Brie";
-    private static final int BACKSTAGE_PASSES_THRESHOLD_FIVE = 5;
-    private static final int BACKSTAGE_PASSES_THRESHOLD_TEN = 10;
-    private static final int EXPIRY = 0;
-    private static final int MAX_QUALITY = 50;
-    private static final int MIN_QUALITY = 0;
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -33,11 +36,19 @@ class GildedRose {
                 item.sellIn--;
             }
 
+            final boolean isExpired = item.sellIn < EXPIRY;
+
             if(item.name.equals(AGED_BRIE)) {
-                qualityDelta = AGED_BRIE_QUALITY_DELTA;
+                if(isExpired) {
+                    qualityDelta = EXPIRED_AGED_BRIE_QUALITY_DELTA;
+                } else {
+                    qualityDelta = AGED_BRIE_QUALITY_DELTA;
+                }
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
             } else if(item.name.equals(BACKSTAGE_PASSES)) {
-                if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
+                if(isExpired) {
+                    qualityDelta = MIN_QUALITY - item.quality;
+                } else if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
                     qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_FIVE;
                 } else if(item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
                     qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_TEN;
@@ -46,28 +57,14 @@ class GildedRose {
                 }
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
             } else if(item.name.equals(SULFURAS)) {
-                qualityDelta = SULFURAS_QUALITY_DELTA;
-                item.quality = item.quality + qualityDelta;
+                // Hey Alexa, play U Can't Touch This by MC Hammer
             } else {
-                qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
-                item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
-            }
-
-            if(item.sellIn < EXPIRY) {
-                final int qualityDeltaWhenExpired;
-                if(item.name.equals(AGED_BRIE)) {
-                    qualityDeltaWhenExpired = EXPIRED_AGED_BRIE_QUALITY_DELTA;
-                    item.quality = Math.min(item.quality + qualityDeltaWhenExpired, MAX_QUALITY);
-                } else if(item.name.equals(BACKSTAGE_PASSES)) {
-                    qualityDeltaWhenExpired = MIN_QUALITY - item.quality;
-                    item.quality = item.quality + qualityDeltaWhenExpired;
-                } else if(item.name.equals(SULFURAS)) {
-                    qualityDeltaWhenExpired = EXPIRED_SULFURAS_QUALITY_DELTA;
-                    item.quality = item.quality + qualityDeltaWhenExpired;
+                if(isExpired) {
+                    qualityDelta = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
                 } else {
-                    qualityDeltaWhenExpired = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
-                    item.quality = Math.max(item.quality + qualityDeltaWhenExpired, MIN_QUALITY);
+                    qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
                 }
+                item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
             }
         }
     }
