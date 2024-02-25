@@ -13,8 +13,8 @@ class GildedRose {
     private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     private static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
     private static final String AGED_BRIE = "Aged Brie";
-    private static final int BACKSTAGE_PASSES_THRESHOLD_FIVE = 6;
-    private static final int BACKSTAGE_PASSES_THRESHOLD_TEN = 11;
+    private static final int BACKSTAGE_PASSES_THRESHOLD_FIVE = 5;
+    private static final int BACKSTAGE_PASSES_THRESHOLD_TEN = 10;
     private static final int EXPIRY = 0;
     private static final int MAX_QUALITY = 50;
     private static final int MIN_QUALITY = 0;
@@ -28,6 +28,11 @@ class GildedRose {
         for (int i = 0; i < items.length; i++) {
             Item item = items[i];
             final int qualityDelta;
+
+            if (!item.name.equals(SULFURAS)) {
+                item.sellIn--;
+            }
+
             if(item.name.equals(AGED_BRIE)) {
                 qualityDelta = AGED_BRIE_QUALITY_DELTA;
                 item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
@@ -46,10 +51,6 @@ class GildedRose {
             } else {
                 qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
                 item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
-            }
-
-            if (!item.name.equals(SULFURAS)) {
-                item.sellIn--;
             }
 
             if(item.sellIn < EXPIRY) {
