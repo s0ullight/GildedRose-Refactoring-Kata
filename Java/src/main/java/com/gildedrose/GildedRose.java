@@ -27,7 +27,8 @@ class GildedRose {
 
     private static void handleDayEndForItem(Item item) {
         updateItemSellIn(item);
-        updateItemQuality(item);
+        ItemStrategy itemStrategy = getStrategyForItem(item);
+        itemStrategy.updateItemQuality(item);
     }
 
     private static void updateItemSellIn(Item item) {
@@ -36,42 +37,19 @@ class GildedRose {
         }
     }
 
-    private static void updateItemQuality(Item item) {
+    private static ItemStrategy getStrategyForItem(Item item) {
+        ItemStrategy itemStrategy;
         if (item.name.equals(AGED_BRIE)) {
-            updateItemQualityForAgedBrie(item);
+            itemStrategy = new AgedBrieStrategy();
         } else if (item.name.startsWith(BACKSTAGE_PASSES)) {
-            updateItemQualityForBackstagePasses(item);
+            itemStrategy = new BackstagePassesStrategy();
         } else if (item.name.startsWith(SULFURAS)) {
-            updateItemQualityForLegendaryItem(item);
+            itemStrategy = new LegendaryItemStrategy();
         } else if (item.name.startsWith(CONJURED_ITEM)) {
-            updateItemQualityForConjuredItem(item);
+            itemStrategy = new ConjuredItemStrategy();
         } else {
-            updateItemQualityForRegularItem(item);
+            itemStrategy = new RegularItemStrategy();
         }
-    }
-
-    private static void updateItemQualityForAgedBrie(Item item) {
-        ItemStrategy itemStrategy = new AgedBrieStrategy();
-        itemStrategy.updateItemQuality(item);
-    }
-
-    private static void updateItemQualityForBackstagePasses(Item item) {
-        ItemStrategy itemStrategy = new BackstagePassesStrategy();
-        itemStrategy.updateItemQuality(item);
-    }
-
-    private static void updateItemQualityForLegendaryItem(Item item) {
-        ItemStrategy itemStrategy = new LegendaryItemStrategy();
-        itemStrategy.updateItemQuality(item);
-    }
-
-    private static void updateItemQualityForConjuredItem(Item item) {
-        ItemStrategy itemStrategy = new ConjuredItemStrategy();
-        itemStrategy.updateItemQuality(item);
-    }
-
-    private static void updateItemQualityForRegularItem(Item item) {
-        ItemStrategy itemStrategy = new RegularItemStrategy();
-        itemStrategy.updateItemQuality(item);
+        return itemStrategy;
     }
 }
