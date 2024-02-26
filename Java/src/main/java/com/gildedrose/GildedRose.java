@@ -2,21 +2,14 @@ package com.gildedrose;
 
 import com.gildedrose.strategies.ItemStrategy;
 import com.gildedrose.strategies.impl.AgedBrieStrategy;
+import com.gildedrose.strategies.impl.BackstagePassesStrategy;
 
 class GildedRose {
     private static final int EXPIRY = 0;
     private static final int MIN_QUALITY = 0;
-    private static final int MAX_QUALITY = 50;
-
-    private static final int BACKSTAGE_PASSES_THRESHOLD_TEN = 10;
-    private static final int BACKSTAGE_PASSES_THRESHOLD_FIVE = 5;
 
     private static final int REGULAR_ITEM_QUALITY_DELTA = -1;
     private static final int EXPIRED_REGULAR_ITEM_QUALITY_DELTA = -2;
-    
-    private static final int BACKSTAGE_PASSES_QUALITY_DELTA = 1;
-    private static final int BACKSTAGE_PASSES_QUALITY_DELTA_TEN = 2;
-    private static final int BACKSTAGE_PASSES_QUALITY_DELTA_FIVE = 3;
 
     private static final int CONJURED_ITEM_QUALITY_DELTA = -2;
     private static final int EXPIRED_CONJURED_ITEM_QUALITY_DELTA = -4;
@@ -69,17 +62,8 @@ class GildedRose {
     }
 
     private static void updateItemQualityForBackstagePasses(Item item) {
-        final int qualityDelta;
-        if (isExpired(item)) {
-            qualityDelta = MIN_QUALITY - item.quality;
-        } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
-            qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_FIVE;
-        } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
-            qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_TEN;
-        } else {
-            qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA;
-        }
-        item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
+        ItemStrategy itemStrategy = new BackstagePassesStrategy();
+        itemStrategy.updateItemQuality(item);
     }
 
     private static void updateItemQualityForLegendaryItem(Item item) {
