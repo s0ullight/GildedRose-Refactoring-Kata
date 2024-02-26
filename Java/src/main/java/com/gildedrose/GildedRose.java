@@ -1,5 +1,7 @@
 package com.gildedrose;
 
+import java.util.Arrays;
+
 import com.gildedrose.strategies.ItemStrategy;
 
 class GildedRose {
@@ -10,9 +12,6 @@ class GildedRose {
     }
 
     public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            Item item = items[i];
-            ItemStrategy.handleDayEndForItem(item);
-        }
+        Arrays.stream(items).forEach(ItemStrategy::handleDayEndForItem);
     }
 }
