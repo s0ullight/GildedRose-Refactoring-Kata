@@ -51,17 +51,16 @@ class GildedRose {
 
     private static void updateItemQuality(Item item) {
         final int qualityDelta;
-        final boolean isExpired = item.sellIn < EXPIRY;
 
         if (item.name.equals(AGED_BRIE)) {
-            if (isExpired) {
+            if (isExpired(item)) {
                 qualityDelta = EXPIRED_AGED_BRIE_QUALITY_DELTA;
             } else {
                 qualityDelta = AGED_BRIE_QUALITY_DELTA;
             }
             item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
         } else if (item.name.startsWith(BACKSTAGE_PASSES)) {
-            if (isExpired) {
+            if (isExpired(item)) {
                 qualityDelta = MIN_QUALITY - item.quality;
             } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
                 qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_FIVE;
@@ -74,19 +73,24 @@ class GildedRose {
         } else if (item.name.startsWith(SULFURAS)) {
             // Hey Alexa, play U Can't Touch This by MC Hammer
         } else if (item.name.startsWith(CONJURED_ITEM)) {
-            if (isExpired) {
+            if (isExpired(item)) {
                 qualityDelta = EXPIRED_CONJURED_ITEM_QUALITY_DELTA;
             } else {
                 qualityDelta = CONJURED_ITEM_QUALITY_DELTA;
             }
             item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
         } else {
-            if (isExpired) {
+            if (isExpired(item)) {
                 qualityDelta = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
             } else {
                 qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
             }
             item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
         }
+    }
+
+    private static boolean isExpired(Item item) {
+        final boolean isExpired = item.sellIn < EXPIRY;
+        return isExpired;
     }
 }
