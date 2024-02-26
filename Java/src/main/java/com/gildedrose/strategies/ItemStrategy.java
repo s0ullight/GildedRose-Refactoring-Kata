@@ -7,6 +7,10 @@ public interface ItemStrategy {
     public static final int MIN_QUALITY = 0;
     public static final int MAX_QUALITY = 50;
 
+    default void updateItemSellIn(Item item) {
+        item.sellIn--;
+    }
+
     void updateItemQuality(Item item);
 
     default boolean isExpired(Item item) {

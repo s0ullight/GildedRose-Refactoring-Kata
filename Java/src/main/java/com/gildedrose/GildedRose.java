@@ -26,15 +26,9 @@ class GildedRose {
     }
 
     private static void handleDayEndForItem(Item item) {
-        updateItemSellIn(item);
         ItemStrategy itemStrategy = getStrategyForItem(item);
+        itemStrategy.updateItemSellIn(item);
         itemStrategy.updateItemQuality(item);
-    }
-
-    private static void updateItemSellIn(Item item) {
-        if (!item.name.startsWith(SULFURAS)) {
-            item.sellIn--;
-        }
     }
 
     private static ItemStrategy getStrategyForItem(Item item) {
