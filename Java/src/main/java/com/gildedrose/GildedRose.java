@@ -50,43 +50,65 @@ class GildedRose {
     }
 
     private static void updateItemQuality(Item item) {
-        final int qualityDelta;
-
         if (item.name.equals(AGED_BRIE)) {
-            if (isExpired(item)) {
-                qualityDelta = EXPIRED_AGED_BRIE_QUALITY_DELTA;
-            } else {
-                qualityDelta = AGED_BRIE_QUALITY_DELTA;
-            }
-            item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
+            updateItemQualityForAgedBrie(item);
         } else if (item.name.startsWith(BACKSTAGE_PASSES)) {
-            if (isExpired(item)) {
-                qualityDelta = MIN_QUALITY - item.quality;
-            } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
-                qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_FIVE;
-            } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
-                qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_TEN;
-            } else {
-                qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA;
-            }
-            item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
+            updateItemQualityForBackstagePasses(item);
         } else if (item.name.startsWith(SULFURAS)) {
-            // Hey Alexa, play U Can't Touch This by MC Hammer
+            updateItemQualityForLegendaryItem(item);
         } else if (item.name.startsWith(CONJURED_ITEM)) {
-            if (isExpired(item)) {
-                qualityDelta = EXPIRED_CONJURED_ITEM_QUALITY_DELTA;
-            } else {
-                qualityDelta = CONJURED_ITEM_QUALITY_DELTA;
-            }
-            item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
+            updateItemQualityForConjuredItem(item);
         } else {
-            if (isExpired(item)) {
-                qualityDelta = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
-            } else {
-                qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
-            }
-            item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
+            updateItemQualityForRegularItem(item);
         }
+    }
+
+    private static void updateItemQualityForAgedBrie(Item item) {
+        final int qualityDelta;
+        if (isExpired(item)) {
+            qualityDelta = EXPIRED_AGED_BRIE_QUALITY_DELTA;
+        } else {
+            qualityDelta = AGED_BRIE_QUALITY_DELTA;
+        }
+        item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
+    }
+
+    private static void updateItemQualityForBackstagePasses(Item item) {
+        final int qualityDelta;
+        if (isExpired(item)) {
+            qualityDelta = MIN_QUALITY - item.quality;
+        } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_FIVE) {
+            qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_FIVE;
+        } else if (item.sellIn < BACKSTAGE_PASSES_THRESHOLD_TEN) {
+            qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA_TEN;
+        } else {
+            qualityDelta = BACKSTAGE_PASSES_QUALITY_DELTA;
+        }
+        item.quality = Math.min(item.quality + qualityDelta, MAX_QUALITY);
+    }
+
+    private static void updateItemQualityForLegendaryItem(Item item) {
+        // Hey Alexa, play U Can't Touch This by MC Hammer
+    }
+
+    private static void updateItemQualityForConjuredItem(Item item) {
+        final int qualityDelta;
+        if (isExpired(item)) {
+            qualityDelta = EXPIRED_CONJURED_ITEM_QUALITY_DELTA;
+        } else {
+            qualityDelta = CONJURED_ITEM_QUALITY_DELTA;
+        }
+        item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
+    }
+
+    private static void updateItemQualityForRegularItem(Item item) {
+        final int qualityDelta;
+        if (isExpired(item)) {
+            qualityDelta = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
+        } else {
+            qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
+        }
+        item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
     }
 
     private static boolean isExpired(Item item) {
