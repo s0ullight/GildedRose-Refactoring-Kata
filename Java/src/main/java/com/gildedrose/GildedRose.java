@@ -5,14 +5,9 @@ import com.gildedrose.strategies.impl.AgedBrieStrategy;
 import com.gildedrose.strategies.impl.BackstagePassesStrategy;
 import com.gildedrose.strategies.impl.ConjuredItemStrategy;
 import com.gildedrose.strategies.impl.LegendaryItemStrategy;
+import com.gildedrose.strategies.impl.RegularItemStrategy;
 
 class GildedRose {
-    private static final int EXPIRY = 0;
-    private static final int MIN_QUALITY = 0;
-
-    private static final int REGULAR_ITEM_QUALITY_DELTA = -1;
-    private static final int EXPIRED_REGULAR_ITEM_QUALITY_DELTA = -2;
-
     private static final String SULFURAS = "Sulfuras";
     private static final String BACKSTAGE_PASSES = "Backstage passes";
     private static final String AGED_BRIE = "Aged Brie";
@@ -76,17 +71,7 @@ class GildedRose {
     }
 
     private static void updateItemQualityForRegularItem(Item item) {
-        final int qualityDelta;
-        if (isExpired(item)) {
-            qualityDelta = EXPIRED_REGULAR_ITEM_QUALITY_DELTA;
-        } else {
-            qualityDelta = REGULAR_ITEM_QUALITY_DELTA;
-        }
-        item.quality = Math.max(item.quality + qualityDelta, MIN_QUALITY);
-    }
-
-    private static boolean isExpired(Item item) {
-        final boolean isExpired = item.sellIn < EXPIRY;
-        return isExpired;
+        ItemStrategy itemStrategy = new RegularItemStrategy();
+        itemStrategy.updateItemQuality(item);
     }
 }
