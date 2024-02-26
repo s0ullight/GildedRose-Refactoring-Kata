@@ -3,6 +3,7 @@ package com.gildedrose;
 import com.gildedrose.strategies.ItemStrategy;
 import com.gildedrose.strategies.impl.AgedBrieStrategy;
 import com.gildedrose.strategies.impl.BackstagePassesStrategy;
+import com.gildedrose.strategies.impl.LegendaryItemStrategy;
 
 class GildedRose {
     private static final int EXPIRY = 0;
@@ -67,7 +68,8 @@ class GildedRose {
     }
 
     private static void updateItemQualityForLegendaryItem(Item item) {
-        // Hey Alexa, play U Can't Touch This by MC Hammer
+        ItemStrategy itemStrategy = new LegendaryItemStrategy();
+        itemStrategy.updateItemQuality(item);
     }
 
     private static void updateItemQualityForConjuredItem(Item item) {
